@@ -83,4 +83,14 @@
         android:layout_alignEnd="@+id/editText_Name"
         android:layout_toEndOf="@+id/textView4" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View Contacts"
+        android:id="@+id/button_View"
+        android:layout_alignTop="@+id/button_Add"
+        android:layout_alignParentEnd="true"
+        android:onClick="viewData"
+        android:nestedScrollingEnabled="false" />
+
 </RelativeLayout>

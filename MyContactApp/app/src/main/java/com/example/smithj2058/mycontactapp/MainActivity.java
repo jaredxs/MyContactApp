@@ -1,6 +1,8 @@
 package com.example.smithj2058.mycontactapp;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,7 +18,8 @@ public class MainActivity extends AppCompatActivity {
     EditText editName;
     EditText editAge;
     EditText editAddress;
-    Button btnAddData;
+    String[] fields;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +31,11 @@ public class MainActivity extends AppCompatActivity {
         editName = (EditText) findViewById(R.id.editText_Name);
         editAge = (EditText) findViewById(R.id.editText_Age);
         editAddress = (EditText) findViewById(R.id.editText_Address);
-        btnAddData = (Button) findViewById(R.id.button_Add);
+        fields = new String[3];
+        fields[0] = "Name - ";
+        fields[1] = "Age - ";
+        fields[2] = "Address - ";
+
 
     }
     public void addData(View view){
@@ -54,6 +61,38 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void viewData(View view){
+        Cursor res = myDb.getAllData();
+        if(res.getCount() == 0){
+            //Show Message || Error - No Data Found In Database
+            //Output message using Log.D and Toast
+            return;
+        }
+        StringBuffer buffer = new StringBuffer();
+        res.moveToFirst();
+        //Setup loop with cursor (res) using moveToNext
+        for(int i = 0; i < res.getCount(); i++){
+            for(int j = 1; j <= 3; j++) {
+                buffer.append(fields[j-1]);
+                buffer.append(res.getString(j));
+                buffer.append("\n");
+            }
+            res.moveToNext();
+        }
+        if(buffer.toString().equals(null)){
+            showMessage("Error", "No Data Found in Database");
+        }
+        else{
+            showMessage("Data Found", buffer.toString());
+        }
+        System.out.println(buffer);
 
+
+    }
+
+    private void showMessage(String error, String s){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.show();
+    }
 
 }
