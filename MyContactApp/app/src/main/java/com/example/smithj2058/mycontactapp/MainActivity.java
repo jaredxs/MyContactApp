@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     EditText editName;
     EditText editAge;
     EditText editAddress;
+    EditText editSearch;
     String[] fields;
 
 
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         editName = (EditText) findViewById(R.id.editText_Name);
         editAge = (EditText) findViewById(R.id.editText_Age);
         editAddress = (EditText) findViewById(R.id.editText_Address);
+        editSearch = (EditText) findViewById(R.id.editText_Search);
         fields = new String[4];
         fields[0] = "ID - ";
         fields[1] = "Name - ";
@@ -94,6 +96,28 @@ public class MainActivity extends AppCompatActivity {
         alertDialogBuilder.setTitle(title);
         alertDialogBuilder.setMessage(message);
         alertDialogBuilder.show();
+    }
+    public void searchMessage(View view){
+        String searcher = editSearch.getText().toString();
+        StringBuffer buffer = new StringBuffer();
+        Cursor res = myDb.getAllData();
+        res.moveToFirst();
+        for(int i = 0; i < res.getCount(); i++){
+            if(res.getString(1).equals(searcher)){
+                for(int j = 0; j <= 3; j++) {
+                    buffer.append(fields[j]);
+                    buffer.append(res.getString(j));
+                    buffer.append("\n");
+                }
+            }
+            res.moveToNext();
+        }
+        if(buffer.toString().equals("")){
+            showMessage("No Search Results Found", "");
+        }
+        else {
+            showMessage("Search Results", buffer.toString());
+        }
     }
 
 }
