@@ -31,10 +31,11 @@ public class MainActivity extends AppCompatActivity {
         editName = (EditText) findViewById(R.id.editText_Name);
         editAge = (EditText) findViewById(R.id.editText_Age);
         editAddress = (EditText) findViewById(R.id.editText_Address);
-        fields = new String[3];
-        fields[0] = "Name - ";
-        fields[1] = "Age - ";
-        fields[2] = "Address - ";
+        fields = new String[4];
+        fields[0] = "ID - ";
+        fields[1] = "Name - ";
+        fields[2] = "Age - ";
+        fields[3] = "Address - ";
 
 
     }
@@ -65,33 +66,33 @@ public class MainActivity extends AppCompatActivity {
         Cursor res = myDb.getAllData();
         if(res.getCount() == 0){
             //Show Message || Error - No Data Found In Database
+            showMessage("Error", "No Data Found in Database");
             //Output message using Log.D and Toast
             return;
         }
         StringBuffer buffer = new StringBuffer();
         res.moveToFirst();
-        //Setup loop with cursor (res) using moveToNext
+       //Setup loop with cursor (res) using moveToNext
         for(int i = 0; i < res.getCount(); i++){
-            for(int j = 1; j <= 3; j++) {
-                buffer.append(fields[j-1]);
+            for(int j = 0; j <= 3; j++) {
+                buffer.append(fields[j]);
                 buffer.append(res.getString(j));
                 buffer.append("\n");
             }
             res.moveToNext();
         }
-        if(buffer.toString().equals(null)){
-            showMessage("Error", "No Data Found in Database");
-        }
-        else{
-            showMessage("Data Found", buffer.toString());
-        }
+
+        showMessage("Data", buffer.toString());
         System.out.println(buffer);
 
 
     }
 
-    private void showMessage(String error, String s){
+    private void showMessage(String title, String message){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setCancelable(true);
+        alertDialogBuilder.setTitle(title);
+        alertDialogBuilder.setMessage(message);
         alertDialogBuilder.show();
     }
 
